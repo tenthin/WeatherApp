@@ -1,18 +1,52 @@
 import { useState } from "react";
 import SearchBar from "./components/SearchBar";
+import {
+  getCoordinates,
+  getCurrentWeather,
+  getForecast,
+} from "./api/weatherApi";
 
 function App() {
-  const [city,setCity] = useState("");
+  const [city, setCity] = useState("");
+  const [weatherData, setWeatherData] = useState(null);
+  const [forecastData, setForecastData] = useState(null);
 
-  const handleSearch = (city) => {
-    console.log("use searched for:", city);
-    setCity(city);
+  const handleSearch = async (city) => {
+    try {
+      //get coordinate for the city
+      const { lat, lon } = await getCoordinates(city);
+
+      //get full weather data using one Call API
+      const current = await getCurrentWeather(lat, lon);
+
+      const forecast = await getForecast(lat, lon);
+      // save data in state
+      setWeatherData(current);
+      setForecastData(forecast);
+      // also update city text
+      setCity(city);
+    } catch (error) {
+      console.log(error.message);
+    }
   };
+
   return (
     <div className="bg-blue-300 min-w-screen min-h-screen">
       {/* <div className=""> */}
       <SearchBar onSearch={handleSearch} />
       {city && <p>You Searched for: {city}</p>}
+      {weatherData && (
+        <pre className="bg-white p-4 mt-4 rounded-lg">
+          {JSON.stringify(weatherData, null, 2)}
+        </pre>
+      )}
+
+      {forecastData && (
+        <pre className="bg-white p-4 mt-4 rounded-lg">
+          {JSON.stringify(forecastData, null, 2)}
+        </pre>
+      )}
+
       {/* Current Weather */}
       {/* Hourly Forecast */}
       {/* Weekly Forecast */}
