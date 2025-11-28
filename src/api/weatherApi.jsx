@@ -1,4 +1,5 @@
-const API_KEY = "5379ec29c0e265f9a3566456407cea3f";
+const API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
+
 
 // ✔ Keep this (Geocoding API)
 export async function getCoordinates(city) {
