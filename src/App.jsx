@@ -1,10 +1,12 @@
 import { useState } from "react";
 import SearchBar from "./components/SearchBar";
+import CurrentWeather from "./components/CurrentWeather";
 import {
   getCoordinates,
   getCurrentWeather,
   getForecast,
 } from "./api/weatherApi";
+import Forecast from "./components/Forecast";
 
 function App() {
   const [city, setCity] = useState("");
@@ -31,20 +33,16 @@ function App() {
   };
 
   return (
-    <div className="bg-blue-300 min-w-screen min-h-screen">
+    <div className="bg-black min-w-screen min-h-screen">
       {/* <div className=""> */}
       <SearchBar onSearch={handleSearch} />
       {city && <p>You Searched for: {city}</p>}
-      {weatherData && (
-        <pre className="bg-white p-4 mt-4 rounded-lg">
-          {JSON.stringify(weatherData, null, 2)}
-        </pre>
-      )}
+      {weatherData && <CurrentWeather data={weatherData} />}
 
       {forecastData && (
-        <pre className="bg-white p-4 mt-4 rounded-lg">
-          {JSON.stringify(forecastData, null, 2)}
-        </pre>
+        <div className="bg-white p-4 mt-4 rounded-lg">
+          <Forecast forecast={forecastData} />
+        </div>
       )}
 
       {/* Current Weather */}
