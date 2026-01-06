@@ -22,7 +22,7 @@ function App() {
       const current = await getCurrentWeather(lat, lon);
 
       const forecast = await getForecast(lat, lon);
-      console.log(forecast.list)
+      console.log(forecast.list);
       // save data in state
       setWeatherData(current);
       setForecastData(forecast);
@@ -34,28 +34,28 @@ function App() {
   };
 
   return (
-    <div className="min-w-screen min-h-screen">
-      {/* <div className=""> */}
-      <SearchBar onSearch={handleSearch} />
-      <div>
+    <div className="min-h-screen bg-sky-100">
+      <div className="w-full max-w-md p-4">
+        <SearchBar onSearch={handleSearch} />
         <div>
-          <img src="" alt="" />
+          <div>
+            <img src="" alt="" />
+          </div>
+          {city && <p className="mt-4 text-gray-600">You Searched for: {city}</p>}
+          {weatherData && <CurrentWeather data={weatherData} />}
         </div>
-        {city && <p>You Searched for: {city}</p>}
-        {weatherData && <CurrentWeather data={weatherData} />}
+
+        {forecastData && (
+          <div className="mt-6">
+            <Forecast forecast={forecastData} />
+          </div>
+        )}
+
+        {/* Current Weather */}
+        {/* Hourly Forecast */}
+        {/* Weekly Forecast */}
+        {/* Details */}
       </div>
-
-      {forecastData && (
-        <div className="bg-white p-4 mt-4 rounded-lg">
-          <Forecast forecast={forecastData} />
-        </div>
-      )}
-
-      {/* Current Weather */}
-      {/* Hourly Forecast */}
-      {/* Weekly Forecast */}
-      {/* Details */}
-      {/* </div> */}
     </div>
   );
 }
