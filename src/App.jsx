@@ -7,6 +7,7 @@ import {
   getForecast,
 } from "./api/weatherApi";
 import Forecast from "./components/Forecast";
+import HourlyForecast from "./components/HourlyForecast";
 
 function App() {
   const [city, setCity] = useState("");
@@ -35,16 +36,13 @@ function App() {
 
   return (
     <div className="min-h-screen bg-sky-100">
-      <div className="w-full max-w-md p-4">
-        <SearchBar onSearch={handleSearch} />
-        <div>
-          <div>
-            <img src="" alt="" />
-          </div>
-          {city && <p className="mt-4 text-gray-600">You Searched for: {city}</p>}
-          {weatherData && <CurrentWeather data={weatherData} />}
+      <SearchBar onSearch={handleSearch} />
+      <div className="w-[80%] m-auto">
+        {city && <p className="mt-4 text-gray-600">You Searched for: {city}</p>}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-9">
+          {weatherData && <CurrentWeather className="" data={weatherData} />}
+          <HourlyForecast hourly={forecastData.list} />
         </div>
-
         {forecastData && (
           <div className="mt-6">
             <Forecast forecast={forecastData} />
