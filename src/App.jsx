@@ -16,18 +16,13 @@ function App() {
 
   const handleSearch = async (city) => {
     try {
-      //get coordinate for the city
       const { lat, lon } = await getCoordinates(city);
 
-      //get full weather data using one Call API
       const current = await getCurrentWeather(lat, lon);
-
       const forecast = await getForecast(lat, lon);
-      console.log(forecast.list);
-      // save data in state
+
       setWeatherData(current);
       setForecastData(forecast);
-      // also update city text
       setCity(city);
     } catch (error) {
       console.log(error.message);
@@ -38,21 +33,24 @@ function App() {
     <div className="min-h-screen bg-sky-100">
       <SearchBar onSearch={handleSearch} />
       <div className="w-[80%] m-auto">
-        {city && <p className="mt-4 text-gray-600">You Searched for: {city}</p>}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-9">
-          {weatherData && <CurrentWeather className="" data={weatherData} />}
-          <HourlyForecast hourly={forecastData.list} />
-        </div>
-        {forecastData && (
-          <div className="mt-6">
-            <Forecast forecast={forecastData} />
-          </div>
-        )}
+        <p>How's Weather looking today?</p>
+        {/* MAIN LAYOUT */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
+          
+          {/* LEFT SIDE */}
+          <div className="lg:col-span-2 space-y-6">
+            {weatherData && <CurrentWeather data={weatherData} />}
 
-        {/* Current Weather */}
-        {/* Hourly Forecast */}
-        {/* Weekly Forecast */}
-        {/* Details */}
+            {forecastData && <Forecast forecast={forecastData} />}
+          </div>
+
+          {/* RIGHT SIDE */}
+          <div className="lg:col-span-1">
+            {forecastData && (
+              <HourlyForecast hourly={forecastData.list} />
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );
