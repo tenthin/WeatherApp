@@ -12,13 +12,13 @@ function SearchBar({ onSearch }) {
   };
 
   return (
-    <div className="bg-orange-400 p-5">
+    <div className="m-auto">
       <form onSubmit={handleSubmit} className="flex gap-3">
         <input
           type="text"
           placeholder="Enter city name..."
           value={city}
-          className="border rounded-lg p-2 text-white"
+          className="border-2 border-gray-200 rounded-lg p-2 w-[400px] bg-white focus:outline-none "
           onChange={(e) => setCity(e.target.value)}
         />
         <button type="submit" className="bg-black text-white px-4 py-2 rounded-lg cursor-pointer">

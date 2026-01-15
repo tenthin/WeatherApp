@@ -4,7 +4,7 @@ function HourlyForecast({ hourly }) {
   if (!hourly?.length) return null;
 
   return (
-    <section className="bg-gray-400 p-5 rounded-2xl">
+    <section className="bg-white p-5 rounded-2xl shadow-md">
       <h2 className="text-lg font-semibold mb-4">
         Hourly Forecast (3-hour intervals)
       </h2>
@@ -19,7 +19,7 @@ function HourlyForecast({ hourly }) {
           return (
             <div
               key={index}
-              className="bg-white rounded-xl shadow-md p-4 text-center flex justify-around items-center"
+              className="bg-sky-100 rounded-xl shadow-md p-4 text-center flex justify-around items-center cursor-pointer"
             >
               <div className="flex gap-4">
                 <p className="text-sm text-gray-600">{hour.weather[0].main}</p>
