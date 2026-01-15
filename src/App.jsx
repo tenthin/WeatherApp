@@ -9,6 +9,7 @@ import {
 import Forecast from "./components/Forecast";
 import HourlyForecast from "./components/HourlyForecast";
 import { getWeatherTheme } from "./utils/getWeatherTheme";
+import { useWeather } from "./context/WeatherContext";
 
 function App() {
   const [city, setCity] = useState("");
@@ -19,26 +20,50 @@ function App() {
     : "default";
 
   //toggle temp
-  const [unit, setUnit] = useState("metric");
+  const { unit, toggleUnit } = useWeather();
 
   const handleSearch = async (city) => {
     try {
-      const { lat, lon } = await getCoordinates(city);
+      const cacheKey = `weather-${city.toLowerCase()}`;
+      const cachedData = localStorage.getItem(cacheKey);
+      const CACHE_TIME = 10 * 60 * 1000; // 10 minutes
 
+      // Check Cache
+      if (cachedData) {
+        const parsed = JSON.parse(cachedData);
+
+        if (Date.now() - parsed.timestamp < CACHE_TIME) {
+          console.log("Using cached data for:",city)
+
+          setWeatherData(parsed.current);
+          setForecastData(parsed.forecast);
+          return;
+        }else{
+          console.log("Cache expired for:",city)
+        }
+      }
+
+      // Fetch Data
+      const { lat, lon } = await getCoordinates(city);
       const current = await getCurrentWeather(lat, lon);
       const forecast = await getForecast(lat, lon);
 
       setWeatherData(current);
       setForecastData(forecast);
       setCity(city);
+
+      // Save to Cache
+      localStorage.setItem(
+        cacheKey,
+        JSON.stringify({
+          current,
+          forecast,
+          timestamp: Date.now(),
+        })
+      );
     } catch (error) {
       console.log(error.message);
     }
-  };
-
-  //Toggle function
-  const toggleUnit = () => {
-    setUnit((prev) => (prev === "metric" ? "imperial" : "metric"));
   };
 
   return (
