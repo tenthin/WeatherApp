@@ -8,11 +8,15 @@ import {
 } from "./api/weatherApi";
 import Forecast from "./components/Forecast";
 import HourlyForecast from "./components/HourlyForecast";
+import { getWeatherTheme } from "./utils/getWeatherTheme";
 
 function App() {
   const [city, setCity] = useState("");
   const [weatherData, setWeatherData] = useState(null);
   const [forecastData, setForecastData] = useState(null);
+  const theme = weatherData
+    ? getWeatherTheme(weatherData.weather[0].main)
+    : "default";
 
   //toggle temp
   const [unit, setUnit] = useState("metric");
@@ -38,7 +42,7 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-sky-100">
+    <div className={`min-h-screen transition-all duration-500 ${theme}`}>
       <div className="w-[80%] m-auto">
         <div className="flex flex-col items-center">
           <p className="text-4xl m-9">How's the sky looking today?</p>
@@ -55,14 +59,16 @@ function App() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
           {/* LEFT SIDE */}
           <div className="lg:col-span-2 space-y-6">
-            {weatherData && <CurrentWeather data={weatherData} unit={unit}/>}
+            {weatherData && <CurrentWeather data={weatherData} unit={unit} />}
 
-            {forecastData && <Forecast forecast={forecastData} unit={unit}/>}
+            {forecastData && <Forecast forecast={forecastData} unit={unit} />}
           </div>
 
           {/* RIGHT SIDE */}
           <div className="lg:col-span-1">
-            {forecastData && <HourlyForecast hourly={forecastData.list} unit={unit}/>}
+            {forecastData && (
+              <HourlyForecast hourly={forecastData.list} unit={unit} />
+            )}
           </div>
         </div>
       </div>

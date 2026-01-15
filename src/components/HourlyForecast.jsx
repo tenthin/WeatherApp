@@ -1,6 +1,7 @@
-import "../../src/App.css"
+import "../../src/App.css";
+import { convertTemp } from "../utils/convertTemp";
 
-function HourlyForecast({ hourly }) {
+function HourlyForecast({ hourly, unit = "metric" }) {
   if (!hourly?.length) return null;
 
   return (
@@ -10,12 +11,15 @@ function HourlyForecast({ hourly }) {
       </h2>
 
       {/* Horizontal scroll container */}
-      <div className="flex gap-4 flex-col max-h-[630px] overflow-y-auto custom-scroll" >
+      <div className="flex gap-4 flex-col max-h-[630px] overflow-y-auto custom-scroll">
         {hourly.map((hour, index) => {
           const time = new Date(hour.dt * 1000).toLocaleTimeString([], {
             hour: "numeric",
           });
 
+          // Convert temperature using unit
+          const temp = Math.round(convertTemp(hour.main.temp, unit));
+          
           return (
             <div
               key={index}
@@ -27,7 +31,7 @@ function HourlyForecast({ hourly }) {
               </div>
 
               <p className="text-2xl font-bold">
-                {Math.round(hour.main.temp)}°C
+                {temp}°{unit === "metric" ? "C" : "F"}
               </p>
             </div>
           );

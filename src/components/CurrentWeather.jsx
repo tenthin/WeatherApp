@@ -1,6 +1,6 @@
-import React from "react";
+import { convertTemp } from "../utils/convertTemp";
 
-function CurrentWeather({ data }) {
+function CurrentWeather({ data, unit = "metric" }) {
   const icon = data.weather[0].icon;
   const iconUrl = `https://openweathermap.org/img/wn/${icon}@2x.png`;
 
@@ -13,6 +13,10 @@ function CurrentWeather({ data }) {
     day: "numeric",
   };
   const currentDate = now.toLocaleDateString(undefined, options);
+
+  const temp = Math.round(convertTemp(data.main.temp, unit));
+  const feelsLike = Math.round(convertTemp(data.main.feels_like, unit));
+
 
   return (
     <div className="bg-white h-[300px] rounded-2xl p-6 shadow-md text-center flex justify-around items-center cursor-pointer">
@@ -41,12 +45,12 @@ function CurrentWeather({ data }) {
         <div>
           {/* Temperature */}
           <p className="text-6xl font-semibold">
-            {Math.round(data.main.temp)}°C
+            {temp}°{unit === "metric" ? "C" : "F"}
           </p>
 
           {/* Feels like */}
           <p className="text-gray-500 mt-1">
-            Feels like {Math.round(data.main.feels_like)}°C
+            Feels like {temp}°{unit === "metric" ? "C" : "F"}
           </p>
         </div>
       </div>
