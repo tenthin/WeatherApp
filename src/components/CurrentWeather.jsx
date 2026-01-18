@@ -19,13 +19,13 @@ function CurrentWeather({ data, unit = "metric" }) {
 
 
   return (
-    <div className="bg-white md:h-[300px] rounded-2xl p-6 shadow-md text-center flex md:gap-3 justify-around items-center cursor-pointer">
+    <div className="bg-white md:h-[300px] rounded-2xl p-6 shadow-md text-center flex md:gap-0 gap-4 justify-around items-center cursor-pointer">
       <div>
         {/* City */}
         <h1 className="md:text-3xl font-bold">{data.name}</h1>
 
         {/* Date */}
-        <p className="text-gray-500 mt-1">{currentDate}</p>
+        <p className="text-gray-500 mt-1 text-sm md:text-xl">{currentDate}</p>
       </div>
 
       <div className="flex gap-9">
