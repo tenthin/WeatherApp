@@ -6,6 +6,9 @@ import { getWeatherTheme } from "./utils/getWeatherTheme";
 import { useWeather } from "./context/WeatherContext";
 import { useWeatherData } from "./hooks/useWeatherData";
 import ErrorBoundary from "./components/ErrorBoundary";
+import CurrentWeatherSkeleton from "./components/Skeletons/CurrentWeatherSkeleton";
+import ForecastSkeleton from "./components/Skeletons/ForecastSkeleton";
+import HourlyForecastSkeleton from "./components/Skeletons/HourlyForecastSkeleton";
 
 function App() {
   const { unit, toggleUnit } = useWeather();
@@ -33,22 +36,32 @@ function App() {
           </button>
         </div>
 
-        {/* Loading UI */}
-        {loading && <p className="text-center mt-6">Loading weather...</p>}
-
         {/* Error UI */}
         {error && <p className="text-red-500 text-center">{error}</p>}
 
         <ErrorBoundary>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
             <div className="lg:col-span-2 space-y-6">
-              {weatherData && <CurrentWeather data={weatherData} unit={unit} />}
-              {forecastData && <Forecast forecast={forecastData} unit={unit} />}
+              {loading ? (
+                <CurrentWeatherSkeleton />
+              ) : (
+                weatherData && <CurrentWeather data={weatherData} unit={unit} />
+              )}
+
+              {loading ? (
+                <ForecastSkeleton />
+              ) : (
+                forecastData && <Forecast forecast={forecastData} unit={unit} />
+              )}
             </div>
 
             <div className="lg:col-span-1">
-              {forecastData && (
-                <HourlyForecast hourly={forecastData.list} unit={unit} />
+              {loading ? (
+                <HourlyForecastSkeleton />
+              ) : (
+                forecastData && (
+                  <HourlyForecast hourly={forecastData.list} unit={unit} />
+                )
               )}
             </div>
           </div>

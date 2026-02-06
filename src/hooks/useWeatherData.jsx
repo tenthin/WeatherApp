@@ -16,6 +16,9 @@ export function useWeatherData() {
       setLoading(true);
       setError(null);
 
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+
+
       const cacheKey = `weather-${city.toLowerCase()}`;
       const cachedData = localStorage.getItem(cacheKey);
       const CACHE_TIME = 10 * 60 * 1000;
