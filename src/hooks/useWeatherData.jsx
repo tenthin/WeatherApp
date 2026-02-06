@@ -12,12 +12,18 @@ export function useWeatherData() {
   const [error, setError] = useState(null);
 
   const fetchWeather = async (city) => {
+  if (!city || /^\d+$/.test(city)) {
+  setLoading(false);
+  setError("No locations found. Please try again.");
+  return;
+}
+
+
     try {
       setLoading(true);
       setError(null);
 
       await new Promise((resolve) => setTimeout(resolve, 1500));
-
 
       const cacheKey = `weather-${city.toLowerCase()}`;
       const cachedData = localStorage.getItem(cacheKey);
@@ -33,7 +39,11 @@ export function useWeatherData() {
         }
       }
 
-      const { lat, lon } = await getCoordinates(city);
+      const location = await getCoordinates(city);
+      if (!location || !location.lat || !location.lon) {
+        throw new Error("No locations found. Please try again.");
+      }
+      const { lat, lon } = location;
       const current = await getCurrentWeather(lat, lon);
       const forecast = await getForecast(lat, lon);
 
@@ -46,7 +56,7 @@ export function useWeatherData() {
           current,
           forecast,
           timestamp: Date.now(),
-        })
+        }),
       );
     } catch (err) {
       setError(err.message || "Failed to fetch weather");
