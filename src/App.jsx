@@ -9,6 +9,7 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import CurrentWeatherSkeleton from "./components/Skeletons/CurrentWeatherSkeleton";
 import ForecastSkeleton from "./components/Skeletons/ForecastSkeleton";
 import HourlyForecastSkeleton from "./components/Skeletons/HourlyForecastSkeleton";
+import TemperatureChart from "./components/Charts/TemperatureChart";
 
 function App() {
   const { unit, toggleUnit } = useWeather();
@@ -46,16 +47,11 @@ function App() {
           </div>
 
           <div className="lg:col-span-1">
+            <TemperatureChart hourly={forecastData.list} unit={unit} />
             <HourlyForecast hourly={forecastData.list} unit={unit} />
           </div>
         </div>
       </ErrorBoundary>
-    );
-  } else {
-    content = (
-      <p className="text-center text-gray-500 mt-6">
-        Search for a city to see the weather.
-      </p>
     );
   }
 
@@ -75,7 +71,7 @@ function App() {
           </button>
         </div>
 
-       {content}
+        {content}
       </div>
     </div>
   );

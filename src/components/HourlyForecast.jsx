@@ -5,13 +5,13 @@ function HourlyForecast({ hourly, unit = "metric" }) {
   if (!hourly?.length) return null;
 
   return (
-    <section className="bg-white p-5 rounded-2xl shadow-md">
+    <section className="bg-white p-5 rounded-2xl shadow-md mt-5">
       <h2 className="text-lg font-semibold mb-4">
         Hourly Forecast (3-hour intervals)
       </h2>
 
       {/* Horizontal scroll container */}
-      <div className="flex gap-4 flex-col max-h-[630px] overflow-y-auto custom-scroll">
+      <div className="flex gap-4 flex-col max-h-[730px] overflow-y-auto custom-scroll">
         {hourly.map((hour, index) => {
           const time = new Date(hour.dt * 1000).toLocaleTimeString([], {
             hour: "numeric",
