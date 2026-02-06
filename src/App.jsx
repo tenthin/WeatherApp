@@ -20,6 +20,45 @@ function App() {
     ? getWeatherTheme(weatherData.weather[0].main)
     : "default";
 
+  let content = null;
+  if (error) {
+    content = <p className="text-red-500 text-center mt-6">{error}</p>;
+  } else if (loading) {
+    content = (
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
+        <div className="lg:col-span-2 space-y-6">
+          <CurrentWeatherSkeleton />
+          <ForecastSkeleton />
+        </div>
+
+        <div className="lg:col-span-1">
+          <HourlyForecastSkeleton />
+        </div>
+      </div>
+    );
+  } else if (weatherData && forecastData) {
+    content = (
+      <ErrorBoundary>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
+          <div className="lg:col-span-2 space-y-6">
+            <CurrentWeather data={weatherData} unit={unit} />
+            <Forecast forecast={forecastData} unit={unit} />
+          </div>
+
+          <div className="lg:col-span-1">
+            <HourlyForecast hourly={forecastData.list} unit={unit} />
+          </div>
+        </div>
+      </ErrorBoundary>
+    );
+  } else {
+    content = (
+      <p className="text-center text-gray-500 mt-6">
+        Search for a city to see the weather.
+      </p>
+    );
+  }
+
   return (
     <div className={`min-h-screen transition-all duration-500 ${theme}`}>
       <div className="w-[80%] m-auto">
@@ -36,36 +75,7 @@ function App() {
           </button>
         </div>
 
-        {/* Error UI */}
-        {error && <p className="text-red-500 text-center">{error}</p>}
-
-        <ErrorBoundary>
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
-            <div className="lg:col-span-2 space-y-6">
-              {loading ? (
-                <CurrentWeatherSkeleton />
-              ) : (
-                weatherData && <CurrentWeather data={weatherData} unit={unit} />
-              )}
-
-              {loading ? (
-                <ForecastSkeleton />
-              ) : (
-                forecastData && <Forecast forecast={forecastData} unit={unit} />
-              )}
-            </div>
-
-            <div className="lg:col-span-1">
-              {loading ? (
-                <HourlyForecastSkeleton />
-              ) : (
-                forecastData && (
-                  <HourlyForecast hourly={forecastData.list} unit={unit} />
-                )
-              )}
-            </div>
-          </div>
-        </ErrorBoundary>
+       {content}
       </div>
     </div>
   );
