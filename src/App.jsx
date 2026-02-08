@@ -10,9 +10,12 @@ import CurrentWeatherSkeleton from "./components/Skeletons/CurrentWeatherSkeleto
 import ForecastSkeleton from "./components/Skeletons/ForecastSkeleton";
 import HourlyForecastSkeleton from "./components/Skeletons/HourlyForecastSkeleton";
 import TemperatureChart from "./components/Charts/TemperatureChart";
+import useFavorites from "./hooks/useFavorites";
+import FavoritesList from "./components/FavoritesList";
 
 function App() {
   const { unit, toggleUnit } = useWeather();
+  const { favorites, addFavorite, removeFavorite, isFavorite } = useFavorites();
 
   const { weatherData, forecastData, loading, error, fetchWeather } =
     useWeatherData();
@@ -40,9 +43,17 @@ function App() {
   } else if (weatherData && forecastData) {
     content = (
       <ErrorBoundary>
+        <FavoritesList favorites={favorites} onSelectCity={onSelectCity}/>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
           <div className="lg:col-span-2 space-y-6">
-            <CurrentWeather data={weatherData} unit={unit} />
+            <CurrentWeather
+              data={weatherData}
+              unit={unit}
+              isFavorite={isFavorite}
+              addFavorite={addFavorite}
+              removeFavorite={removeFavorite}
+            />
+
             <Forecast forecast={forecastData} unit={unit} />
           </div>
 
@@ -60,9 +71,7 @@ function App() {
       <div className="w-[80%] m-auto">
         <div className="flex flex-col items-center">
           <p className="text-4xl m-9">How's the sky looking today?</p>
-
           <SearchBar onSearch={fetchWeather} />
-
           <button
             onClick={toggleUnit}
             className="mt-4 p-2 bg-blue-500 text-white rounded"

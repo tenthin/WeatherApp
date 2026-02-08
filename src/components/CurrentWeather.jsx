@@ -1,6 +1,12 @@
 import { convertTemp } from "../utils/convertTemp";
 
-function CurrentWeather({ data, unit = "metric" }) {
+function CurrentWeather({
+  data,
+  unit = "metric",
+  isFavorite,
+  addFavorite,
+  removeFavorite,
+}) {
   const icon = data.weather[0].icon;
   const iconUrl = `https://openweathermap.org/img/wn/${icon}@2x.png`;
 
@@ -13,16 +19,35 @@ function CurrentWeather({ data, unit = "metric" }) {
     day: "numeric",
   };
   const currentDate = now.toLocaleDateString(undefined, options);
-
   const temp = Math.round(convertTemp(data.main.temp, unit));
   const feelsLike = Math.round(convertTemp(data.main.feels_like, unit));
 
+  const cityName = data.name;
+  const favorite = isFavorite(cityName);
 
   return (
     <div className="bg-white md:h-[300px] rounded-2xl p-6 shadow-md text-center flex md:gap-0 gap-4 justify-around items-center cursor-pointer">
       <div>
         {/* City */}
-        <h1 className="md:text-3xl font-bold">{data.name}</h1>
+        <div className="flex items-center justify-center gap-3">
+          <h1 className="md:text-3xl font-bold">{cityName}</h1>
+
+          <i
+            className={`text-xl cursor-pointer ${
+              favorite
+                ? "fa-solid fa-star text-yellow-400"
+                : "fa-regular fa-star text-gray-400"
+            }`}
+            onClick={() => {
+              if (favorite) {
+                removeFavorite(cityName);
+              } else {
+                addFavorite(cityName);
+              }
+            }}
+            aria-label={favorite ? "Remove from favorites" : "Add to favorites"}
+          ></i>
+        </div>
 
         {/* Date */}
         <p className="text-gray-500 mt-1 text-sm md:text-xl">{currentDate}</p>
