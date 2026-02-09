@@ -26,7 +26,7 @@ function CurrentWeather({
   const favorite = isFavorite(cityName);
 
   return (
-    <div className="bg-white md:h-[300px] rounded-2xl p-6 shadow-md text-center flex md:gap-0 gap-4 justify-around items-center cursor-pointer">
+    <div className="bg-white md:h-[300px] rounded-2xl p-6 shadow-md text-center flex md:gap-0 md:gap-4 justify-around items-center cursor-pointer">
       <div>
         {/* City */}
         <div className="flex items-center justify-center gap-3">
@@ -58,7 +58,7 @@ function CurrentWeather({
         <p className="text-gray-500 mt-1 text-sm md:text-xl">{currentDate}</p>
       </div>
 
-      <div className="flex gap-9">
+      <div className="flex md:gap-9">
         <div>
           {/* Weather description */}
           <p className="text-gray-500 capitalize mt-1">
@@ -74,7 +74,7 @@ function CurrentWeather({
         </div>
         <div>
           {/* Temperature */}
-          <p className="text-6xl font-semibold">
+          <p className="text-3xl md:text-6xl font-semibold">
             {temp}°{unit === "metric" ? "C" : "F"}
           </p>
 
