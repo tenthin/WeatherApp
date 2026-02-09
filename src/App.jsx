@@ -11,14 +11,20 @@ import ForecastSkeleton from "./components/Skeletons/ForecastSkeleton";
 import HourlyForecastSkeleton from "./components/Skeletons/HourlyForecastSkeleton";
 import TemperatureChart from "./components/Charts/TemperatureChart";
 import useFavorites from "./hooks/useFavorites";
-import FavoritesList from "./components/FavoritesList";
+import FavoriteCityCard from "./components/FavoriteCityCard";
 
 function App() {
   const { unit, toggleUnit } = useWeather();
   const { favorites, addFavorite, removeFavorite, isFavorite } = useFavorites();
 
-  const { weatherData, forecastData, loading, error, fetchWeather } =
-    useWeatherData();
+  const {
+    weatherData,
+    forecastData,
+    loading,
+    error,
+    fetchWeather,
+    fetchWeatherByCoords,
+  } = useWeatherData();
 
   const theme = weatherData
     ? getWeatherTheme(weatherData.weather[0].main)
@@ -40,11 +46,9 @@ function App() {
         </div>
       </div>
     );
-
   } else if (weatherData && forecastData) {
     content = (
       <ErrorBoundary>
-        <FavoritesList favorites={favorites} fetchWeather={fetchWeather}/>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
           <div className="lg:col-span-2 space-y-6">
             <CurrentWeather
@@ -66,7 +70,6 @@ function App() {
       </ErrorBoundary>
     );
   }
-
   return (
     <div className={`min-h-screen transition-all duration-500 ${theme}`}>
       <div className="w-[80%] m-auto">
@@ -80,7 +83,18 @@ function App() {
             Switch to {unit === "metric" ? "°F" : "°C"}
           </button>
         </div>
-
+        <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+          {favorites.map((fav) => (
+            <FavoriteCityCard
+              key={fav.city}
+              city={fav.city}
+              temp={fav.temp}
+              unit={unit}
+              onSelect={() => fetchWeatherByCoords(fav.lat, fav.lon)}
+              onRemove={() => removeFavorite(fav.city)}
+            />
+          ))}
+        </div>
         {content}
       </div>
     </div>

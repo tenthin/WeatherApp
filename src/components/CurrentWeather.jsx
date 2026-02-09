@@ -42,7 +42,12 @@ function CurrentWeather({
               if (favorite) {
                 removeFavorite(cityName);
               } else {
-                addFavorite(cityName);
+                addFavorite({
+                  city: cityName,
+                  lat: data.coord.lat,
+                  lon: data.coord.lon,
+                  temp: temp,
+                });
               }
             }}
             aria-label={favorite ? "Remove from favorites" : "Add to favorites"}

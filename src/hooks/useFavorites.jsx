@@ -20,23 +20,28 @@ function useFavorites() {
     localStorage.setItem("favorites", JSON.stringify(favorites));
   }, [favorites]);
 
-  function addFavorite(cityName) {
+  function addFavorite(fav) {
     const alreadyExists = favorites.some(
-      (city) => city.toLowerCase() === cityName.toLowerCase(),
+      (f) =>
+        f.lat === fav.lat && f.lon === fav.lon
     );
+
     if (alreadyExists) return;
-    setFavorites([...favorites, cityName]);
+
+    setFavorites([...favorites, fav]);
   }
 
   function removeFavorite(cityName) {
     setFavorites(
-      favorites.filter((city) => city.toLowerCase() !== cityName.toLowerCase()),
+      favorites.filter(
+        (fav) => fav.city.toLowerCase() !== cityName.toLowerCase(),
+      ),
     );
   }
 
   function isFavorite(cityName) {
     return favorites.some(
-      (city) => city.toLowerCase() === cityName.toLowerCase(),
+      (fav) => fav.city.toLowerCase() === cityName.toLowerCase(),
     );
   }
 

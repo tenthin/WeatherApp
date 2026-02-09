@@ -64,6 +64,23 @@ export function useWeatherData() {
     }
   };
 
+  const fetchWeatherByCoords = async (lat, lon) => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      const current = await getCurrentWeather(lat, lon);
+      const forecast = await getForecast(lat, lon);
+
+      setWeatherData(current);
+      setForecastData(forecast);
+    } catch (err) {
+      setError("Failed to fetch weather");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // useEffect(() => {
   //   const savedCity = localStorage.getItem("lastCity");
   //   if (savedCity) {
@@ -77,5 +94,6 @@ export function useWeatherData() {
     loading,
     error,
     fetchWeather,
+    fetchWeatherByCoords,
   };
 }
