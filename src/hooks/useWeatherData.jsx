@@ -64,6 +64,18 @@ export function useWeatherData() {
     }
   };
 
+  useEffect(() => {
+    if (!navigator.geolocation) return;
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        fetchWeatherByCoords(latitude, longitude);
+      },
+      () => {},
+    );
+  }, []);
+
   const fetchWeatherByCoords = async (lat, lon) => {
     try {
       setLoading(true);
