@@ -40,10 +40,11 @@ function App() {
         </div>
       </div>
     );
+
   } else if (weatherData && forecastData) {
     content = (
       <ErrorBoundary>
-        <FavoritesList favorites={favorites} onSelectCity={onSelectCity}/>
+        <FavoritesList favorites={favorites} fetchWeather={fetchWeather}/>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
           <div className="lg:col-span-2 space-y-6">
             <CurrentWeather

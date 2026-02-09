@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   getCoordinates,
   getCurrentWeather,
@@ -12,12 +12,11 @@ export function useWeatherData() {
   const [error, setError] = useState(null);
 
   const fetchWeather = async (city) => {
-  if (!city || /^\d+$/.test(city)) {
-  setLoading(false);
-  setError("No locations found. Please try again.");
-  return;
-}
-
+    if (!city || /^\d+$/.test(city)) {
+      setError("No locations found. Please try again.");
+      return;
+    }
+    localStorage.setItem("lastCity", city);
 
     try {
       setLoading(true);
@@ -64,6 +63,13 @@ export function useWeatherData() {
       setLoading(false);
     }
   };
+
+  // useEffect(() => {
+  //   const savedCity = localStorage.getItem("lastCity");
+  //   if (savedCity) {
+  //     fetchWeather(savedCity);
+  //   }
+  // }, []);
 
   return {
     weatherData,
