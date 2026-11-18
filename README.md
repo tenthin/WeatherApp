@@ -2,8 +2,6 @@
 
 A **high-performance weather dashboard** built with **React.js**, providing real-time weather information with advanced features like caching, dynamic theming, and temperature unit toggle.
 
-![Weather App Screenshot](./assets/images/screenshot.png) <!-- Optional: Add your screenshot -->
-
 ---
 
 ## 🚀 Features
@@ -48,7 +46,14 @@ A **high-performance weather dashboard** built with **React.js**, providing real
 ```bash
 
 git clone https://github.com/tenthin/WeatherApp.git
-npm install
+cd WeatherApp
+```
 
+## Insall dependencies:
+```bash
+npm install
+```
+## Star the app
+```bash
 npm run dev
 ```
