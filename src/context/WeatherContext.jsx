@@ -16,7 +16,7 @@ export function WeatherProvider({ children }) {
   );
 }
 
-// Custom hook (clean & professional)
+// Custom hook
 export function useWeather() {
   return useContext(WeatherContext);
 }

@@ -65,14 +65,19 @@ export function useWeatherData() {
   };
 
   useEffect(() => {
-    if (!navigator.geolocation) return;
+    if (!navigator.geolocation) {
+      setError("Location isn't available. Search for a city instead.");
+      return;
+    }
 
     navigator.geolocation.getCurrentPosition(
       (position) => {
         const { latitude, longitude } = position.coords;
         fetchWeatherByCoords(latitude, longitude);
       },
-      () => {},
+      () => {
+        setError("Couldn't access your location. Search for a city instead.");
+      },
     );
   }, []);
 
@@ -92,13 +97,6 @@ export function useWeatherData() {
       setLoading(false);
     }
   };
-
-  // useEffect(() => {
-  //   const savedCity = localStorage.getItem("lastCity");
-  //   if (savedCity) {
-  //     fetchWeather(savedCity);
-  //   }
-  // }, []);
 
   return {
     weatherData,

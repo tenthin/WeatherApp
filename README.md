@@ -36,8 +36,6 @@ A **high-performance weather dashboard** built with **React.js**, providing real
 
 ---
 
-## 📦 Installation
-
 ## Run locally
 
 1. Clone the repository and enter the project folder.
