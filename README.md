@@ -53,7 +53,7 @@ cd WeatherApp
 ```bash
 npm install
 ```
-## Star the app
+## Start the app
 ```bash
 npm run dev
 ```
